@@ -7,12 +7,14 @@
 #define GMotors_h
 
 #include "Arduino.h"
+#include "LSM303.h"
 
 class GMotors
 {
   public:
     GMotors(int pin1, int pin2, int pin3, int pin4, int pin5, int pin6, int pin7, int pin8);
     GMotors(int pin1, int pin2);
+    GMotors(int pin1, int pin2, int pin3, int pin4);
     void Release();
     void Release(float vel1, float vel3, float d);
     void Accelerate(float vel);
@@ -27,6 +29,7 @@ class GMotors
     int Return_NonRelative_Angle();
     int Compass1();
     int RelAbsAngle();
+    int Compass();
     bool Compass(int n, int vel);
     void compassConfig(int min1, int min2, int min3, int max1, int max2, int max3);
   private:
@@ -54,6 +57,9 @@ class GMotors
     int trueAngle; 
     int Actual;
     int RelAbsActual;
+    LSM303::vector<int16_t> running_min;
+    LSM303::vector<int16_t> running_max;
+    LSM303 compass;
 };
 
 #endif

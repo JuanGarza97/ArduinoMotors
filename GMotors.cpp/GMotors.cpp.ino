@@ -36,6 +36,18 @@ GMotors::GMotors(int pin1, int pin2)
   _pin2 = pin2; 
 }
 
+GMotors::GMotors(int pin1, int pin2, int pin3, int pin4)
+{
+  pinMode(pin1, OUTPUT);
+  pinMode(pin2, OUTPUT);
+  pinMode(pin3, OUTPUT);
+  pinMode(pin4, OUTPUT);
+  _pin1 = pin1;
+  _pin2 = pin2; 
+  _pin5 = pin3;
+  _pin6 = pin4; 
+}
+
 void GMotors::Motor(float vel)
 {
   _vel = vel;
@@ -349,23 +361,23 @@ void GMotors::Turn(float vel, String side)
  if(side.equals("left"))
  {
    digitalWrite(_pin1, LOW);
-   digitalWrite(_pin4, LOW);
-   digitalWrite(_pin7, LOW);
+   digitalWrite(_pin3, LOW);
+   digitalWrite(_pin6, LOW);
    digitalWrite(_pin8, LOW);
    analogWrite(_pin2, vel);
-   analogWrite(_pin3, vel);
-   analogWrite(_pin6, vel); 
+   analogWrite(_pin4, vel);
+   analogWrite(_pin5, vel); 
    analogWrite(_pin7, vel);
  }
  else if(side.equals("right"))
  {
    digitalWrite(_pin2, LOW);
-   digitalWrite(_pin3, LOW);
+   digitalWrite(_pin4, LOW);
+   digitalWrite(_pin5, LOW);
    digitalWrite(_pin7, LOW);
-   digitalWrite(_pin6, LOW);
    analogWrite(_pin1, vel);
-   analogWrite(_pin4, vel);
-   analogWrite(_pin5, vel);
+   analogWrite(_pin3, vel);
+   analogWrite(_pin6, vel);
    analogWrite(_pin8, vel); 
  }
 }
@@ -511,7 +523,13 @@ int GMotors::RelAbsAngle()
       return trueAngle;
 }
 
-
+int GMotors::Compass()
+{
+  compass.read();
+  int heading = compass.heading();
+  Actual = RelAbsAngle();
+  return Actual;
+}
 
 bool GMotors::Compass(int n, int vel)
 {
@@ -523,18 +541,18 @@ bool GMotors::Compass(int n, int vel)
   {
     if((Actual >= 0 && Actual <= 1)|| Actual <= 360 && Actual >= 359)
     {
-      release();
+      Release();
        return true;
     }
     else if(Actual > 1 && Actual <= 180)
     {
-      release();
+      Release();
       Turn(vel, "left");
       return false;
     }
     else if(Actual >  180 && Actual < 359)
     {
-      release();
+      Release();
       Turn(vel, "right");
       return false;
     }
@@ -543,19 +561,19 @@ bool GMotors::Compass(int n, int vel)
   {
     if((Actual >= 89 && Actual <= 91))
     {
-      release();
+      Release();
        return true;
     }
     else if(Actual > 91 && Actual <= 271)
     {
-      release();
+      Release();
       Turn(vel, "left");
       return false;
     }
     else if((Actual > 271 && Actual < 360) || (Actual >= 0 && Actual < 89))
     {
-      release();
-      turn(vel, "right");
+      Release();
+      Turn(vel, "right");
       return false;
     }
   }
@@ -563,18 +581,18 @@ bool GMotors::Compass(int n, int vel)
   {
     if((Actual >= 179 && Actual <= 181))
     {
-       release();
+       Release();
        return true;
     }
     else if((Actual >  181 && Actual <= 360)||(Actual >= 0 && Actual <= 5))
     {
-      release();
+      Release();
       Turn(vel,"left");
       return false;
     }
     else if(Actual < 179  && Actual > 5)
     {
-      release();
+      Release();
       Turn(vel, "right");
       return false;
     }
@@ -583,29 +601,30 @@ bool GMotors::Compass(int n, int vel)
   {
     if((Actual >= 269 && Actual <= 271))
     {
-      release();
-       return true;
+      Release();
+      return true;
     }
     else if(Actual <  269 && Actual >= 90)
     {
-      release();
+      Release();
       Turn(vel, "right");
       return false;
     }
     else
     {
-      release();
+      Release();
       Turn(vel, "left");
       return false;
     }
   }
   delay(10);
-  release(); 
+  Release(); 
   delay(10);
 }
 
 void GMotors::compassConfig(int min1, int min2, int min3, int max1, int max2, int max3)
 {
+  
   Wire.begin();
   compass.init();
   compass.enableDefault();
