@@ -1,0 +1,38 @@
+#######################################
+# Syntax Coloring Map GMotors
+#######################################
+
+
+#######################################
+Datatypes (KEYWORD1)
+#######################################
+
+GMotors	KEYWORD1
+
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+Forward	KEYWORD2
+ 
+Backwards	KEYWORD2
+ 
+Left	KEYWORD2 
+
+Right	KEYWORD2
+ 
+Diagonal	KEYWORD2
+ 
+Release	KEYWORD2
+Turn	KEYWORD2
+moveMotor	KEYWORD2
+
+Compass	KEYWORD2
+compassConfig	KEYWORD2
+
+setMotorSpeed	KEYWORD2
+distanceInMeters	KEYWORD2
+distanceInCentimeters	KEYWORD2
+#######################################
+#
